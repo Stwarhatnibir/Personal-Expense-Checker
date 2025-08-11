@@ -5,12 +5,15 @@ import ExpenseList from "./components/ExpenseList";
 import MonthlySummary from "./components/MonthlySummary";
 import "./App.css";
 
+// Backend API base URL (Render deployment)
+const API_BASE = "https://personal-expense-cheker-backend.onrender.com";
+
 export default function App() {
   const [expenses, setExpenses] = useState([]);
 
   const fetchExpenses = async () => {
     try {
-      const res = await axios.get("http://localhost:3001/api/expenses");
+      const res = await axios.get(`${API_BASE}/api/expenses`);
       setExpenses(res.data);
     } catch (error) {
       console.error("Error fetching expenses:", error);
@@ -19,7 +22,7 @@ export default function App() {
 
   const addExpense = async (expense) => {
     try {
-      await axios.post("http://localhost:3001/api/expenses", expense);
+      await axios.post(`${API_BASE}/api/expenses`, expense);
       fetchExpenses();
     } catch (error) {
       console.error("Error adding expense:", error);
