@@ -1,20 +1,22 @@
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
 const app = express();
+
+// Middleware
 app.use(cors());
 app.use(bodyParser.json());
 
-// Connect to MongoDB
+// Connect to MongoDB Atlas
 mongoose
-  .connect("mongodb://localhost:27017/expense-tracker", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+  .connect(process.env.MONGO_URI, {
+    // useNewUrlParser & useUnifiedTopology are no longer required in latest driver
   })
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.error("MongoDB connection error:", err));
+  .then(() => console.log("✅ Connected to MongoDB Atlas"))
+  .catch((err) => console.error("❌ MongoDB connection error:", err));
 
 // Expense Model
 const expenseSchema = new mongoose.Schema(
@@ -67,7 +69,8 @@ app.post("/api/expenses", async (req, res) => {
   }
 });
 
+// Start server
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
